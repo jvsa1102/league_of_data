@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %} Times {% endblock %} {% block content%}
+<h1 align="center">Times de {{user.username}}</h1>
+<table class="table table-hover">
+    <tbody>
+    {% for team in user.teams %}
+        <tr>
+            <td>{{ team.name }}</td>
+            <td class="text-end">
+                <a class="btn btn-outline-dark" href="/edit-team/{{team.id}}" role="button">Editar</a>
+                <a class="btn btn-outline-dark" href="/delete-team/{{team.id}}" role="button">Deletar</a>
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+<form method="POST">
+    <div class="form-group">
+        <input
+            type="text"
+            class="col-4 rounded-1 border-dark border-1"
+            id="team"
+            name="team"
+            placeholder="Nome da equipe"
+        />
+        
+    </div>
+    <br/>   
+    <button type="submit" class="btn btn-outline-dark">Adicionar Time</button>
+</form>   
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block title %}Editar jogador{% endblock %} {% block content
+    %}
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-control"
+                placeholder="Nome do jogador"
+                value="{{player.name}}"
+            />
+            <label for="summoner_name">Nome de invocador</label>
+            <input
+                type="summoner_name"
+                id="summoner_name"
+                name="summoner_name"
+                class="form-control"
+                placeholder="Nome de invocador"
+                value="{{player.summoner_name}}"
+            />
+            <label for="position">Posição</label>
+            <select name="position" class="form-control">
+                {% for p in positions %}
+                    <option value="{{p}}"
+                    {% if (p == player.position) %} selected="selected" {% endif %}
+                    >
+                    {{p.capitalize()}}
+                    </option>
+                {% endfor %}
+            </select>
+            <br />
+            <div class="row">
+                <button class="btn btn-outline-dark col-2 mx-1" type="submit">Editar</button>
+                <a class="btn btn-outline-dark col-2 mx-1" href="/edit-team/{{team.id}}" role="button">Voltar</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}    

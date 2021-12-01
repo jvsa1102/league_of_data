@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %} Times {% endblock %} {% block content%}
+<h1 align="center">Times de {{user.username}}</h1>
+<ul class="list-group list-group-flush" id="notes">
+    {% for team in user.teams %}
+    <li class="list-group-item">
+        {{ team.name }}
+        <a class="btn btn-primary" href="/edit-team/{{team.id}}" role="button">Editar</a>
+        <a class="btn btn-primary" href="/delete-team/{{team.id}}" role="button">Deletar</a>
+    </li>
+    {% endfor %}
+</ul>
+<form method="POST">
+    <div class="form-group">
+        <label for="team">Criar Equipe</label>
+        <input
+            type="text"
+            class="form-control"
+            id="team"
+            name="team"
+            placeholder="Nome da equipe"
+        />
+        <button type="submit" class="btn btn-primary">Adicionar Time</button>
+    </div>
+</form>   
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %} {% block title %} {{team.name}} {% endblock %} {% block content%}
+    <h1 align="center">{{team.name}}</h1>
+    <table class="table table-hover">
+        <tbody>
+            {% for player in team.players %}
+                <tr>
+                    <td>{{ player.summoner_name }}</td>
+                    <td class="text-end">
+                        <a class="btn btn-outline-dark" href="/profile/{{player.id}}" role="button">Perfil</a>
+                        <a class="btn btn-outline-dark" href="/edit-player/{{player.id}}" role="button">Editar</a>
+                        <a class="btn btn-outline-dark" href="/delete-player/{{player.id}}" role="button">Deletar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="row">
+        <a class="btn btn-outline-dark col-2 mx-1" href="/add-player/{{team.id}}" role="button">Adicionar jogador</a>
+        <a class="btn btn-outline-dark col-2 mx-1" href="/scrims/{{team.id}}" role="button">Scrims</a>
+        <a class="btn btn-outline-dark col-2 mx-1" href="/teams" role="button">Voltar aos times</a>
+    </div>
+{% endblock %}

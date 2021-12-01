@@ -1,0 +1,89 @@
+{% extends "base.html" %} 
+{% block title %}Adicionar Scrim{% endblock %} 
+{% block content%}
+<h1 align=center>Adicionar scrim</h1>
+<div class="row">
+<form method="POST">
+    <div class="form-group">
+        <label for="description">Descrição</label>
+        <input
+            type="text"
+            id="description"
+            name="description"
+            class="form-control"
+            placeholder="Dados da scrim"
+        />
+        <label for="match_id">Link da partida</label>
+        <input
+            type="text"
+            id="match_id"
+            name="match_id"
+            class="form-control"
+            placeholder="Id"
+        />
+        <div class="col-4">
+            <label for="top_id">Top</label>
+            <select name="top_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'top') %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+        <label for="jungle_id">Jungle</label>
+            <select name="jungle_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'jungle') %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="mid_id">Mid</label>
+            <select name="mid_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'mid') %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="adc_id">Adc</label>
+            <select name="adc_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'adc') %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="support_id">Suporte</label>
+            <select name="support_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'support') %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="side">Lado do mapa</label>
+            <select name="side" class="form-control">
+                <option value="blue">Azul</option>
+                <option value="red">Vermelho</option>
+            </select>
+        </div>
+        <br />
+        <div class="row">
+            <button class="btn btn-outline-dark col-1 mx-1" type="submit">Adicionar</button>
+            <a class="btn btn-outline-dark col-1 mx-1" href="/scrims/{{team.id}}" role="button">Voltar</a>
+        </div>
+    </div>
+</form>
+</div>
+{% endblock %}

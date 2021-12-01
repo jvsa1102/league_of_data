@@ -1,0 +1,528 @@
+{% extends "base.html" %} 
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>{% endblock %}
+{% block title %}Scrim{% endblock %} 
+{% block content%}
+<h2>{{scrim.description}}</h2>
+<h4>Patch - {{data["game"]["patch"]}}</h3>
+<h4>Duração da partida - {{data["game"]["duration"]}}</h3>
+</br></br>
+<h4>Lado Azul
+({{data["blue_team"]["totalKills"]}}/{{data["blue_team"]["totalDeaths"]}}/{{data["blue_team"]["totalAssists"]}})
+{% if data["blue_team"]["win"]=="Win" %}
+<span class="text-success">Vencedor</span>
+{% endif %}</h4>
+<table>
+    <th>
+        Banimentos
+    </th>
+    <tr>
+        <td>
+            {% for ban in data["blue_team"]["bans"] %}
+                <img src="{{ban['championIcon']}}" alt="" width="30px" height="30px"/>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Jogador</th>
+            <th>Campeão</th>
+            <th>Nível</th>
+            <th>Feitiços</th>
+            <th>Itens</th>
+            <th>A/M/A</th>
+            <th>CS</th>
+            <th>CS/min</th>
+            <th>Ouro</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in data["blue_team"]["players"] %}
+        <tr class="table-primary">
+            {% if scrim.side == 'blue' %}
+                {% for player in team.players %}
+                    {% if player.position == p["position"] and player.id == p["playerId"] %}
+                        <td>
+                            <p class="fs-5">{{player.summoner_name}}</p>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <td>
+                    <p class="fs-5">{{p["position"].capitalize()}}</p>
+                </td>
+            {% endif %}
+            <td>
+                <img src="{{p['championIcon']}}" alt="" width="60px" height="60px"/>
+            </td>
+            <td>
+                <p class="fs-5">{{p['stats']['champLevel']}}</p>
+            </td>
+            <td>
+                <img src="{{p['spell1Icon']}}" alt="" width="30px" height="30px"/>
+                <img src="{{p['spell2Icon']}}" alt="" width="30px" height="30px"/>
+            </td>
+            <td>
+                <img src="{{p['stats']['item0icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item1icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item2icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item3icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item4icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item5icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item6icon']}}" alt="" width="45px" height="45px"/>
+            </td>
+            <td>
+                <p class="fs-5">
+                    {{p["stats"]["kills"]}} /
+                    {{p["stats"]["deaths"]}} /
+                    {{p["stats"]["assists"]}}
+                </p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["totalMinionsKilled"]+p["stats"]["neutralMinionsKilled"]}}</p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["csMin"]}}</p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["goldEarned"]}}</p>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</br></br>
+
+<h4>Lado Vermelho
+({{data["red_team"]["totalKills"]}}/{{data["red_team"]["totalDeaths"]}}/{{data["red_team"]["totalAssists"]}})
+{% if data["red_team"]["win"]=="Win" %}
+<span class="text-success">Vencedor</span>
+{% endif %}</h4>
+<table>
+    <th>
+        Banimentos
+    </th>
+    <tr>
+        <td>
+            {% for ban in data["red_team"]["bans"] %}
+                <img src="{{ban['championIcon']}}" alt="" width="30px" height="30px"/>
+            {% endfor %}
+        </td>
+    </tr>
+</table>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Jogador</th>
+            <th>Campeão</th>
+            <th>Nível</th>
+            <th>Feitiços</th>
+            <th>Itens</th>
+            <th>A/M/A</th>
+            <th>CS</th>
+            <th>CS/min</th>
+            <th>Ouro</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in data["red_team"]["players"] %}
+        <tr class="table-danger">
+            {% if scrim.side == 'red' %}
+                {% for player in team.players %}
+                    {% if player.position == p["position"] and player.id == p["playerId"] %}
+                        <td>
+                            <p class="fs-5">{{player.summoner_name}}</p>
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <td>
+                    <p class="fs-5">{{p["position"].capitalize()}}</p>
+                </td>
+            {% endif %}
+            <td>
+                <img src="{{p['championIcon']}}" alt="" width="60px" height="60px"/>
+            </td>
+            <td>
+                <p class="fs-5">{{p['stats']['champLevel']}}</p>
+            </td>
+            <td>
+                <img src="{{p['spell1Icon']}}" alt="" width="30px" height="30px"/>
+                <img src="{{p['spell2Icon']}}" alt="" width="30px" height="30px"/>
+            </td>
+            <td>
+                <img src="{{p['stats']['item0icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item1icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item2icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item3icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item4icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item5icon']}}" alt="" width="45px" height="45px"/>
+                <img src="{{p['stats']['item6icon']}}" alt="" width="45px" height="45px"/>
+            </td>
+            <td>
+                <p class="fs-5">
+                    {{p["stats"]["kills"]}} /
+                    {{p["stats"]["deaths"]}} /
+                    {{p["stats"]["assists"]}}
+                </p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["totalMinionsKilled"]+p["stats"]["neutralMinionsKilled"]}}</p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["csMin"]}}</p>
+            </td>
+            <td>
+                <p class="fs-5">{{p["stats"]["goldEarned"]}}</p>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+        <th class="fs-5">Lado Azul</th>
+        <th class="fs-5">Lado Vermelho</th>
+        <th class="fs-5">Comparativo</th>
+    </thead>
+    <tbody>
+        <th>Dano causado a campeões</th>
+        <th></th>
+        <th></th>
+        <tr>
+            <td><canvas id="damageChartBlue" width="320" height="300"></canvas></td>
+            <td><canvas id="damageChartRed" width="320" height="300"></canvas></td>
+            <td><canvas id="damageChartVs" width="320" height="300"></canvas></td>
+        </tr>
+        <th>Ouro recebido</th>
+        <th></th>
+        <th></th>
+        <tr>
+            <td><canvas id="goldChartBlue" width="320" height="300"></canvas></td>
+            <td><canvas id="goldChartRed" width="320" height="300"></canvas></td>
+            <td><canvas id="goldChartVs" width="320" height="300"></canvas></td>
+        </tr>
+        <th>Dano por ouro(eficiência)</th>
+        <th></th>
+        <th></th>
+        <tr>
+            <td><canvas id="dmgGoldChartBlue" width="320" height="300"></canvas></td>
+            <td><canvas id="dmgGoldChartRed" width="320" height="300"></canvas></td>
+            <td><canvas id="dmgGoldChartVs" width="320" height="300"></canvas></td>
+        </tr>
+    </tbody>
+</table>
+<a class="btn btn-outline-dark" href="/scrims/{{team.id}}" role="button">Voltar a scrims {{team.name}}</a>
+
+<script>
+    var ctx = document.getElementById("damageChartBlue").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{ blue_labels | safe }},
+            datasets: [
+                {   
+                    label: "Dano causado a campeões",
+                    data: {{ blue_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(39, 39, 255)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("damageChartRed").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{ red_labels | safe }},
+            datasets: [
+                {
+                    label: "Dano causado a campeões",
+                    data: {{ red_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("damageChartVs").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{['Top', 'Jungle', 'Mid', 'Adc', 'Sup'] | safe}},
+            datasets: [
+                {
+                    label: "Dano causado a campeões",
+                    data: {{ blue_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgb(39, 39, 255)',
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+                {
+                    label: "Dano causado a campeões",
+                    data: {{ red_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("goldChartBlue").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{ blue_labels | safe }},
+            datasets: [
+                {   
+                    label: "Ouro Recebido",
+                    data: {{ blue_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(39, 39, 255)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+<script>
+    var ctx = document.getElementById("goldChartRed").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{ red_labels | safe }},
+            datasets: [
+                {
+                    label: "Ouro recebido",
+                    data: {{ red_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("goldChartVs").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{['Top', 'Jungle', 'Mid', 'Adc', 'Sup'] | safe}},
+            datasets: [
+                {
+                    label: "Ouro recebido",
+                    data: {{ blue_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgb(39, 39, 255)',
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+                {
+                    label: "Ouro recebido",
+                    data: {{ red_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("dmgGoldChartBlue").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "doughnut",
+        data: {
+            labels: {{ blue_labels | safe }},
+            datasets: [
+                {   
+                    title: "Dano por Ouro",
+                    data: {{ blue_dmg_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)',
+                        'rgba(180, 56, 192, 0.2)',
+                        'rgba(255, 23, 33, 0.2)',
+                        'rgba(43, 255, 33, 0.2)',
+                        'rgba(240, 255, 33, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(39, 39, 255)',
+                        'rgb(180, 56, 192)',
+                        'rgb(255, 23, 33)',
+                        'rgb(43, 255, 33)',
+                        'rgb(240, 255, 33)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+            ]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Chart.js Doughnut Chart'
+            },
+            responsive: false
+        }
+    });
+</script>
+<script>
+    var ctx = document.getElementById("dmgGoldChartRed").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "doughnut",
+        data: {
+            labels: {{ red_labels | safe }},
+            datasets: [
+                {
+                    label: "Dano por ouro",
+                    data: {{ red_dmg_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)',
+                        'rgba(180, 56, 192, 0.2)',
+                        'rgba(255, 23, 33, 0.2)',
+                        'rgba(43, 255, 33, 0.2)',
+                        'rgba(240, 255, 33, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(39, 39, 255)',
+                        'rgb(180, 56, 192)',
+                        'rgb(255, 23, 33)',
+                        'rgb(43, 255, 33)',
+                        'rgb(240, 255, 33)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+<script>
+    var ctx = document.getElementById("dmgGoldChartVs").getContext("2d");
+    var lineChart = new Chart(ctx,{
+        type: "bar",
+        data: {
+            labels: {{['Top', 'Jungle', 'Mid', 'Adc', 'Sup'] | safe}},
+            datasets: [
+                {
+                    label: "Dano por ouro",
+                    data: {{ blue_dmg_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(39, 39, 255, 0.2)',
+                        ],
+                    borderColor: [
+                        'rgb(39, 39, 255)',
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                },
+                {
+                    label: "Dano por ouro",
+                    data: {{ red_dmg_gold_values | safe }},
+                    fill: false,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)'
+                    ],
+                    borderWidth: 1,
+                    lineTension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %} 
+{% block title %}Editar Scrim{% endblock %} 
+{% block content%}
+<h1 align=center>Editar scrim</h1>
+<div class="row">
+<form method="POST">
+    <div class="form-group">
+        <label for="description">Descrição</label>
+        <input
+            type="text"
+            id="description"
+            name="description"
+            class="form-control"
+            placeholder="Dados da scrim"
+            value="{{scrim.description}}"
+        />
+        <label for="match_id">Link da partida</label>
+        <input
+            type="text"
+            id="match_id"
+            name="match_id"
+            class="form-control"
+            placeholder="Id"
+            value="{{scrim.match_id}}"
+        />
+        <div class="col-4">
+            <label for="top_id">Top</label>
+            <select name="top_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'top' and p.id != scrim.top_id) %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% elif p.id == scrim.top_id %}
+                        <option selected value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="jungle_id">Jungle</label>
+            <select name="jungle_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'jungle' and p.id != scrim.jungle_id) %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% elif p.id == scrim.jungle_id %}
+                        <option selected value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                    
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="mid_id">Mid</label>
+            <select name="mid_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'mid' and p.id != scrim.mid_id) %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% elif p.id == scrim.mid_id %}
+                        <option selected value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="adc_id">Adc</label>
+            <select name="adc_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'adc' and p.id != scrim.adc_id) %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% elif p.id == scrim.adc_id %}
+                        <option selected value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="support_id">Support</label>
+            <select name="support_id" class="form-control">
+                {% for p in team.players %}
+                    {% if (p.position == 'support' and p.id != scrim.support_id) %}
+                        <option value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% elif p.id == scrim.support_id %}
+                        <option selected value="{{p.id}}">{{p.summoner_name}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-4">
+            <label for="side">Lado do mapa</label>
+            <select name="side" class="form-control">
+                <option value="blue">Azul</option>
+                <option value="red">Vermelho</option>
+            </select>
+        </div>
+        <br />
+        <div class="row">
+            <button class="btn btn-outline-dark col-1 mx-1" type="submit">Alterar</button>
+            <a class="btn btn-outline-dark col-1 mx-1" href="/scrims/{{team.id}}" role="button">Voltar</a>
+        </div>
+        
+    </div>
+</form>
+</div>
+{% endblock %}

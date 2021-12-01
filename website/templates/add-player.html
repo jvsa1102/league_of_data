@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block title %}Adicionar jogador{% endblock %} {% block content
+    %}
+    <h1 align=center>Adicionar jogador</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="name">Nome</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                class="form-control"
+                placeholder="Nome do jogador"
+            />
+            <label for="summoner_name">Nome de invocador</label>
+            <input
+                type="summoner_name"
+                id="summoner_name"
+                name="summoner_name"
+                class="form-control"
+                placeholder="Nome de invocador"
+            />
+            <label for="position">Posição</label>
+            <select name="position" class="form-control">
+                <option value="top">Top</option>
+                <option value="jungle">Jungle</option>
+                <option value="mid">Mid</option>
+                <option value="adc">ADC</option>
+                <option value="support">Support</option>
+            </select>
+            <br />
+            <div>
+                <button class="btn btn-outline-dark col-2 mx-1" type="submit">Adicionar</button>
+                <a class="btn btn-outline-dark col-2 mx-1" href="/edit-team/{{team.id}}" role="button">Voltar a {{team.name}}</a>
+            </div>
+        </div>
+    </form>
+    {% endblock %}
+    

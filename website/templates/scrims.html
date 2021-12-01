@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %} Scrims {{team.name}} {% endblock %} {% block content%}
+    <h1 align="center">Scrims {{team.name}}</h1>
+    <table class="table table-hover"> 
+        {% for scrim in team.scrims %}
+            <tr>
+                <td>{{ scrim.description }}</td>
+                <td class="text-end">
+                    <a class="btn btn-outline-dark" href="/scrim-data/{{scrim.id}}" role="button">Abrir</a>
+                    <a class="btn btn-outline-dark" href="/edit-scrim/{{scrim.id}}" role="button">Editar</a>
+                    <a class="btn btn-outline-dark" href="/delete-scrim/{{scrim.id}}" role="button">Deletar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="row">
+        <a class="btn btn-outline-dark col-2 mx-1" href="/add-scrim/{{team.id}}" role="button">Adicionar scrim</a>
+        <a class="btn btn-outline-dark col-2 mx-1" href="/edit-team/{{team.id}}" role="button">Voltar a {{team.name}}</a>
+    </div>
+{% endblock %}

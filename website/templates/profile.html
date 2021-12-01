@@ -1,0 +1,117 @@
+{% extends "base.html" %} 
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>{% endblock %}
+{% block title %} {{player.summoner_name}} {% endblock %} 
+{% block content%}
+    <h1 align="center">Perfil de {{player.summoner_name}}</h1>     
+    <table width=50 class="table table-hover align-middle">
+        <tbody>
+            <tr>
+                <img src="http://ddragon.leagueoflegends.com/cdn/10.18.1/img/profileicon/{{ profile_data.profileIconId }}.png" alt="icon" width="70px" height="70px"/>
+            </tr>
+            <tr>
+                <td>Nome: {{player.name}}</td>
+            </tr>
+            <tr>
+                <td>Nome de invocador: {{player.summoner_name}}</td>
+            </tr>
+            <tr>
+                <td>Posição: {{player.position}}</td>
+            </tr>
+            <tr>
+                <td>Time: {{team.name}}</td>
+            </tr>
+            <tr>
+                <td>Nível: {{ profile_data.summonerLevel }}</td>
+            </tr>
+            <tr>
+                <td>Elo: {{ profile_data.elo }} - {{profile_data.lp}} PdL</td>
+            </tr>
+            <tr>
+                <td>Vitórias/Derrotas: {{ profile_data.wins }} - {{ profile_data.losses }} 
+                    ({{winrate_pct}}%)</td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="text-center fs-3 mh-auto">Taxa de vitória nas últimas 10 partidas: {{winrate[0]/(winrate[0]+winrate[1])*100}}%</p>
+                </td>
+                <td><canvas id="winrateChart" width="200" height="200"></canvas></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-hover align-middle">
+        <thead>
+            <th>Data</th>
+            <th>Duração</th>
+            <th>Campeão</th>
+            <th>Feitiços</th>
+            <th>Itens</th>
+            <th>AMA</th>
+            <th>CS</th>
+        </thead>
+        <tbody>
+        {% for match in mh_data %}
+            <tr
+            {% if match["win"] == "Win" %}
+                class="table-success"
+            {% else %}
+                class="table-danger"
+            {% endif %}>
+                <td>{{match["gameCreation"]}}</td>
+                <td>{{match["gameDuration"]}}</td>
+                <td><img src="{{match['championIcon']}}" alt="" width="45px" height="45px"/></td>
+                <td><img src="{{match['spell1Icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['spell2Icon']}}" alt="" width="45px" height="45px"/>
+                </td>
+                <td>
+                    <img src="{{match['stats']['item0icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item1icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item2icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item4icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item3icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item5icon']}}" alt="" width="45px" height="45px"/>
+                    <img src="{{match['stats']['item6icon']}}" alt="" width="45px" height="45px"/>
+                </td>
+                <td>
+                    {{match['stats']['kills']}}/{{match['stats']['deaths']}}/{{match['stats']['assists']}}
+                </td>
+                <td>
+                    {{match['stats']['totalMinionsKilled']+match['stats']['neutralMinionsKilled']}}
+                </td>
+            </tr>
+        {% endfor %}
+        <tr><td><a class="btn btn-outline-dark" href="/edit-team/{{team.id}}" role="button">Voltar à equipe</a></td></tr>
+        </tbody>
+    </table>
+    </div>
+    </form>
+    
+    <script>
+        var ctx = document.getElementById("winrateChart").getContext("2d");
+        var lineChart = new Chart(ctx,{
+            type: "doughnut",
+            data: {
+                labels: ['Vitórias', 'Derrotas'],
+                datasets: [
+                    {
+                        label: "",
+                        data: {{ winrate | safe }},
+                        fill: false,
+                        backgroundColor: [
+                            'rgba(10, 255, 14, 0.2)',
+                            'rgba(255, 99, 132, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(10, 255, 14)',
+                            'rgb(255, 99, 132)'
+                        ],
+                        borderWidth: 1,
+                        lineTension: 0.1
+                    },
+                ]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    </script>
+    {% endblock %}
